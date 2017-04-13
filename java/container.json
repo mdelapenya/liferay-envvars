@@ -1,0 +1,7 @@
+{
+  "id": "java",
+  "type": "wedeploy/java",
+  "hooks": {
+    "build": "mvn package"
+  }
+}

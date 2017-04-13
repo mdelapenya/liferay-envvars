@@ -1,0 +1,17 @@
+bower_components
+coverage
+node_modules
+target
+yarn.lock
+*.soy.js
+ui/src/main/webapp/docs/compiled
+.file-uploads
+
+.classpath
+.idea
+.project
+.settings
+*.iml
+out
+
+**/*.map
