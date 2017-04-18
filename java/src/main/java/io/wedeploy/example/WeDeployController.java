@@ -10,17 +10,17 @@ import org.springframework.web.servlet.ModelAndView;
 @EnableAutoConfiguration
 public class WeDeployController {
 
-	public WeDeployController() {
+    public WeDeployController() {
 
-	}
+    }
 
-	public static void main(String[] args) {
-		SpringApplication.run(WeDeployController.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(WeDeployController.class, args);
+    }
 
-	@RequestMapping("/")
-	public ModelAndView hello() {
-		return new ModelAndView("layout");
-	}
+    @RequestMapping("/")
+    public ModelAndView hello() {
+        return new ModelAndView("layout");
+    }
 
 }
