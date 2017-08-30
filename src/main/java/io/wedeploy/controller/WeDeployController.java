@@ -1,4 +1,4 @@
-package io.wedeploy.example;
+package io.wedeploy.controller;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
