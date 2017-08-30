@@ -16,6 +16,8 @@ package com.liferay.portal.configuration;
 
 import static org.junit.Assert.assertEquals;
 
+import io.wedeploy.controller.WeDeployController;
+
 import org.junit.Test;
 
 /**
@@ -23,15 +25,14 @@ import org.junit.Test;
  */
 public class EnvVariableDecoderTest {
 
-    private static final String _ENV_OVERRIDE_PREFIX = "LIFERAY_";
-
     @Test
     public void testDecode() {
         String envKey = "LIFERAY_SETUP_PERIOD_WIZARD_PERIOD_ENABLED";
 
-        envKey = envKey.substring(_ENV_OVERRIDE_PREFIX.length());
+        envKey = envKey.substring(
+            WeDeployController.ENV_OVERRIDE_PREFIX.length());
 
-        String newKey = EnvVariableDecoder.decode(envKey.toLowerCase());
+        String newKey = envKey.toLowerCase();
 
         String decoded = EnvVariableDecoder.decode(newKey);
 
@@ -43,9 +44,10 @@ public class EnvVariableDecoderTest {
         String envKey =
             "LIFERAY_JDBC_PERIOD_DRIVER_PERIOD_CLASS_UPPERCASEN_AME";
 
-        envKey = envKey.substring(_ENV_OVERRIDE_PREFIX.length());
+        envKey = envKey.substring(
+            WeDeployController.ENV_OVERRIDE_PREFIX.length());
 
-        String newKey = EnvVariableDecoder.decode(envKey.toLowerCase());
+        String newKey = envKey.toLowerCase();
 
         String decoded = EnvVariableDecoder.decode(newKey);
 
