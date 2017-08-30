@@ -12,6 +12,7 @@ buildscript {
   }
 }
 
+apply plugin: 'idea'
 apply plugin: 'java'
 apply plugin: org.springframework.boot.gradle.plugin.SpringBootPlugin
 
@@ -27,8 +28,17 @@ repositories {
 
 dependencies {
   compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+
+  testCompile 'junit:junit:4.12'
 }
 
 task wrapper(type: Wrapper) {
   gradleVersion = '3.3'
+}
+
+test {
+  testLogging {
+		events "passed", "skipped", "failed"
+		exceptionFormat = 'full'
+	}
 }
