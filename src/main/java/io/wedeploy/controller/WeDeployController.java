@@ -5,10 +5,10 @@ import com.liferay.portal.configuration.EnvVariableDecoder;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -32,14 +32,16 @@ public class WeDeployController {
     }
 
     @RequestMapping(value = "/decode/{key}", method = RequestMethod.GET)
-    @ResponseBody
-    public String decode(@PathVariable("key") String key) {
+    public String decode(Model model, @PathVariable("key") String key) {
         String envKey = key.substring(
             WeDeployController.ENV_OVERRIDE_PREFIX.length());
 
         String decodedKey = EnvVariableDecoder.decode(envKey.toLowerCase());
 
-        return decodedKey;
+        model.addAttribute("key", key);
+        model.addAttribute("decodedKey", decodedKey);
+
+        return "decode";
     }
 
 }
