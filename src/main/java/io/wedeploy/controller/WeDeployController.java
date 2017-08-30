@@ -33,13 +33,21 @@ public class WeDeployController {
 
     @RequestMapping(value = "/decode/{key}", method = RequestMethod.GET)
     public String decode(Model model, @PathVariable("key") String key) {
-        String envKey = key.substring(
-            WeDeployController.ENV_OVERRIDE_PREFIX.length());
+		if (key == null || key.isEmpty() ||
+			!key.startsWith(ENV_OVERRIDE_PREFIX)) {
 
-        String decodedKey = EnvVariableDecoder.decode(envKey.toLowerCase());
+			model.addAttribute(
+				"error", "Liferay Env Vars start with LIFERAY_ prefix");
+		}
+		else {
+			String envKey = key.substring(
+				WeDeployController.ENV_OVERRIDE_PREFIX.length());
 
-        model.addAttribute("key", key);
-        model.addAttribute("decodedKey", decodedKey);
+			String decodedKey = EnvVariableDecoder.decode(envKey.toLowerCase());
+
+			model.addAttribute("liferayKey", key);
+			model.addAttribute("decodedKey", decodedKey);
+		}
 
         return "decode";
     }
