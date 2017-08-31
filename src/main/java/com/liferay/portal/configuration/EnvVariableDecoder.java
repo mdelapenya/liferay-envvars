@@ -25,15 +25,15 @@ import java.util.Map;
  */
 public class EnvVariableDecoder {
 
-    public static String decode(String s) {
+    public static String decode(String envKey) {
 		int index = -1;
 		int openUnderLine = -1;
 		int position = 0;
 		StringBuilder sb = new StringBuilder();
 
-		while ((index = s.indexOf(CharPool.UNDERLINE, index + 1)) != -1) {
+		while ((index = envKey.indexOf(CharPool.UNDERLINE, index + 1)) != -1) {
 			if (openUnderLine == -1) {
-				sb.append(s.substring(position, index));
+				sb.append(envKey.substring(position, index));
 
 				openUnderLine = index;
 				position = index;
@@ -41,7 +41,7 @@ public class EnvVariableDecoder {
 				continue;
 			}
 
-			String encoded = s.substring(openUnderLine + 1, index);
+			String encoded = envKey.substring(openUnderLine + 1, index);
 
 			Character character = _charPoolChars.get(encoded.toUpperCase());
 
@@ -54,9 +54,9 @@ public class EnvVariableDecoder {
 				else {
                     System.out.println(
                         "Unable to decode part \"" + encoded +
-                            "\" from \"" + s + "\", preserve it literally");
+                            "\" from \"" + envKey + "\", preserve it literally");
 
-					sb.append(s.substring(openUnderLine, index + 1));
+					sb.append(envKey.substring(openUnderLine, index + 1));
 				}
 			}
 			else {
@@ -67,7 +67,7 @@ public class EnvVariableDecoder {
 			position = index + 1;
 		}
 
-		sb.append(s.substring(position, s.length()));
+		sb.append(envKey.substring(position, envKey.length()));
 
 		return sb.toString();
 	}
