@@ -14,7 +14,6 @@
  
 package com.liferay.portal.configuration;
 
-import io.wedeploy.controller.WeDeployController;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

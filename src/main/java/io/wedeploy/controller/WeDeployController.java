@@ -20,8 +20,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @RequestMapping("/")
 public class WeDeployController extends WebMvcConfigurerAdapter {
 
-    public static final String ENV_OVERRIDE_PREFIX = "LIFERAY_";
-
     public WeDeployController() {
 
     }
@@ -45,14 +43,14 @@ public class WeDeployController extends WebMvcConfigurerAdapter {
     @RequestMapping(value = "/decode/{key}", method = RequestMethod.GET)
     public String decode(Model model, @PathVariable("key") String key) {
 		if (key == null || key.isEmpty() ||
-			!key.startsWith(ENV_OVERRIDE_PREFIX)) {
+			!key.startsWith(Constants.ENV_OVERRIDE_PREFIX)) {
 
 			model.addAttribute(
 				"error", "Liferay Env Vars start with LIFERAY_ prefix");
 		}
 		else {
 			String envKey = key.substring(
-				WeDeployController.ENV_OVERRIDE_PREFIX.length());
+				Constants.ENV_OVERRIDE_PREFIX.length());
 
 			String decodedKey = EnvVariableDecoder.decode(envKey.toLowerCase());
 

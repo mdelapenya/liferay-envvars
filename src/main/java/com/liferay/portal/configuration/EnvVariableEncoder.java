@@ -14,7 +14,7 @@
  
 package com.liferay.portal.configuration;
 
-import io.wedeploy.controller.WeDeployController;
+import io.wedeploy.controller.Constants;
 
 /**
  * @author Manuel de la Peña
@@ -24,7 +24,7 @@ public class EnvVariableEncoder {
     public static String encode(String portalProperty) {
 		StringBuilder sb = new StringBuilder();
 
-		sb.append(WeDeployController.ENV_OVERRIDE_PREFIX);
+		sb.append(Constants.ENV_OVERRIDE_PREFIX);
 
 		char[] chars = portalProperty.toCharArray();
 
