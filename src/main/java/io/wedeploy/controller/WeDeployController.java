@@ -1,8 +1,8 @@
 package io.wedeploy.controller;
 
 import com.liferay.portal.configuration.EnvVariableDecoder;
-
 import com.liferay.portal.configuration.EnvVariableEncoder;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
@@ -11,11 +11,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
+import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @Controller
 @EnableAutoConfiguration
 @RequestMapping("/")
-public class WeDeployController {
+public class WeDeployController extends WebMvcConfigurerAdapter {
 
     public static final String ENV_OVERRIDE_PREFIX = "LIFERAY_";
 
@@ -26,6 +29,18 @@ public class WeDeployController {
     public static void main(String[] args) {
         SpringApplication.run(WeDeployController.class, args);
     }
+
+	@Override
+	public void configurePathMatch(PathMatchConfigurer configurer) {
+		configurer.setUseSuffixPatternMatch(false);
+	}
+
+	@Override
+	public void configureContentNegotiation(
+		ContentNegotiationConfigurer configurer) {
+
+		configurer.favorPathExtension(false);
+	}
 
     @RequestMapping("/")
     public ModelAndView hello() {
