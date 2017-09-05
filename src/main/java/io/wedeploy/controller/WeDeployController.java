@@ -42,11 +42,6 @@ public class WeDeployController extends WebMvcConfigurerAdapter {
 		configurer.favorPathExtension(false);
 	}
 
-    @RequestMapping("/")
-    public ModelAndView index() {
-        return new ModelAndView("layout");
-    }
-
     @RequestMapping(value = "/decode/{key}", method = RequestMethod.GET)
     public String decode(Model model, @PathVariable("key") String key) {
 		if (key == null || key.isEmpty() ||
@@ -82,6 +77,12 @@ public class WeDeployController extends WebMvcConfigurerAdapter {
 		}
 
 		return "encode";
+	}
+
+
+	@RequestMapping("/")
+	public ModelAndView index() {
+		return new ModelAndView("layout");
 	}
 
 }
