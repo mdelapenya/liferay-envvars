@@ -43,7 +43,7 @@ public class WeDeployController extends WebMvcConfigurerAdapter {
 	}
 
     @RequestMapping("/")
-    public ModelAndView hello() {
+    public ModelAndView index() {
         return new ModelAndView("layout");
     }
 
