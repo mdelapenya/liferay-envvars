@@ -2,6 +2,7 @@ package io.wedeploy.controller;
 
 import com.liferay.portal.configuration.EnvVariableDecoder;
 
+import com.liferay.portal.configuration.EnvVariableEncoder;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
@@ -51,5 +52,21 @@ public class WeDeployController {
 
         return "decode";
     }
+
+	@RequestMapping(value = "/encode/{key}", method = RequestMethod.GET)
+	public String encode(Model model, @PathVariable("key") String key) {
+		if (key == null || key.isEmpty()) {
+
+			model.addAttribute("error", "Please add a Liferay Portal property");
+		}
+		else {
+			String encodedKey = EnvVariableEncoder.encode(key);
+
+			model.addAttribute("liferayKey", key);
+			model.addAttribute("encodedKey", encodedKey);
+		}
+
+		return "encode";
+	}
 
 }
