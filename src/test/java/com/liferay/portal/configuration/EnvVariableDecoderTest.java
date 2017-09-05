@@ -40,6 +40,40 @@ public class EnvVariableDecoderTest {
     }
 
     @Test
+    public void testDecodeWithBrackets() {
+         String envKey =
+            "LIFERAY_SETUP_PERIOD_DATABASE_PERIOD_DRIVER_UPPERCASEC_LASS_" +
+                "UPPERCASEN_AME_OPENBRACKET_DB2_CLOSEBRACKET_";
+
+        envKey = envKey.substring(
+            Constants.ENV_OVERRIDE_PREFIX.length());
+
+        String newKey = envKey.toLowerCase();
+
+        String decoded = EnvVariableDecoder.decode(newKey);
+
+        assertEquals("setup.database.driverClassName[db2]", decoded);
+    }
+
+    @Test
+    public void testDecodeWithDash() {
+        String envKey =
+            "LIFERAY_LAYOUT_PERIOD_STATIC_PERIOD_PORTLETS_PERIOD_START_" +
+                "PERIOD_COLUMN_DASH_1_OPENBRACKET_USER_CLOSEBRACKET__" +
+                "OPENBRACKET__SLASH_HOME_CLOSEBRACKET_";
+
+        envKey = envKey.substring(
+            Constants.ENV_OVERRIDE_PREFIX.length());
+
+        String newKey = envKey.toLowerCase();
+
+        String decoded = EnvVariableDecoder.decode(newKey);
+
+        assertEquals(
+            "layout.static.portlets.start.column-1[user][/home]", decoded);
+    }
+
+    @Test
     public void testDecodeWithUppercase() {
         String envKey =
             "LIFERAY_JDBC_PERIOD_DRIVER_PERIOD_CLASS_UPPERCASEN_AME";
