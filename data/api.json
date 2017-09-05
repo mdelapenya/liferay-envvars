@@ -1,0 +1,10 @@
+[
+  {
+	"path": "/decodes/*",
+	"data": true
+  },
+  {
+	"path": "/encodes/*",
+	"data": true
+  }
+]
