@@ -14,4 +14,4 @@ cache:
   - $HOME/.gradle
 
 script:
-  - ./liferay/gradlew clean test
+  - cd liferay; ./gradlew clean test
