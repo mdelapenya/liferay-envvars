@@ -24,14 +24,14 @@ import static org.junit.Assert.assertEquals;
 public class EnvVariableEncoderTest {
 
     @Test
-    public void testDecode() {
+    public void testEncode() {
         String decoded = EnvVariableEncoder.encode("setup.wizard.enabled");
 
         assertEquals("LIFERAY_SETUP_PERIOD_WIZARD_PERIOD_ENABLED", decoded);
     }
 
     @Test
-    public void testDecodeWithBrackets() {
+    public void testEncodeWithBrackets() {
         String decoded = EnvVariableEncoder.encode(
             "setup.database.driverClassName[db2]");
 
@@ -41,7 +41,7 @@ public class EnvVariableEncoderTest {
     }
 
     @Test
-    public void testDecodeWithDash() {
+    public void testEncodeWithDash() {
         String decoded = EnvVariableEncoder.encode(
             "layout.static.portlets.start.column-1[user][/home]");
 
@@ -52,7 +52,7 @@ public class EnvVariableEncoderTest {
     }
 
     @Test
-    public void testDecodeWithUppercase() {
+    public void testEncodeWithUppercase() {
         String decoded = EnvVariableEncoder.encode("jdbc.driver.className");
 
         assertEquals(
