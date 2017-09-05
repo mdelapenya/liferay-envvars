@@ -8,7 +8,7 @@ WeDeploy
 	.limit(5)
 	.get('encodes')
 	.then(function(response) {
-		appendTasks(response);
+		appendEncodes(response);
 	})
 	.catch(function(error) {
 		console.error(error);
