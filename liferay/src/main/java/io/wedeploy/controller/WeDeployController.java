@@ -30,8 +30,24 @@ public class WeDeployController extends WebMvcConfigurerAdapter {
     public WeDeployController() {
 		Map<String, String> env = System.getenv();
 
-		if (env.containsKey("WEDEPLOY_DB_URL")) {
-			dbUrl = env.get("WEDEPLOY_DB_URL");
+		while (dbUrl == null) {
+			if (env.containsKey("WEDEPLOY_DB_URL")) {
+				dbUrl = env.get("WEDEPLOY_DB_URL");
+			}
+			else {
+				System.out.println(
+					"Please set up an environment variable with the URL to " +
+						"the datastore service, with key WEDEPLOY_DB_URL");
+
+				try {
+					Thread.sleep(5000);
+				}
+				catch (InterruptedException e) {
+					throw new RuntimeException(
+						"Cannot interrupt process while waiting for proper " +
+							"environment configuration");
+				}
+			}
 		}
     }
 
