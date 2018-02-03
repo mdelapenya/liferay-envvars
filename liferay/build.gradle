@@ -16,8 +16,10 @@ apply plugin: 'idea'
 apply plugin: 'java'
 apply plugin: org.springframework.boot.gradle.plugin.SpringBootPlugin
 
-task run(dependsOn: ':bootRun') << {
+task run(dependsOn: ':bootRun') {
+  doLast {
     println 'Boot'
+  }
 }
 
 repositories {
