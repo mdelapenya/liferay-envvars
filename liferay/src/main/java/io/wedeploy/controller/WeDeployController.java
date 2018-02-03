@@ -160,10 +160,6 @@ public class WeDeployController extends WebMvcConfigurerAdapter {
 					+ response.statusMessage());
 		}
 
-		if (response.body().equals("[]")) {
-			return new HashMap<>();
-		}
-
 		Map<String, Object> keys = response.bodyMap(String.class, Object.class);
 
 		if (keys == null) {
