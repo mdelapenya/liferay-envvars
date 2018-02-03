@@ -25,4 +25,8 @@ public class Constants {
 
 	public static final String ENV_OVERRIDE_PREFIX = "LIFERAY_";
 
+	public static final String GITHUB_PORTAL_PROPERTIES_RAW_URL =
+		"https://raw.githubusercontent.com/liferay/liferay-portal/master" +
+			"/portal-impl/src/portal.properties";
+
 }
