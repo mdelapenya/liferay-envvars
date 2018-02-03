@@ -84,20 +84,7 @@ public class WeDeployController extends WebMvcConfigurerAdapter {
 			model.addAttribute("liferayKey", key);
 			model.addAttribute("decodedKey", decodedKey);
 
-			Map<String, Object> keyRow = fetchKeyValue(DECODES_PATH, key);
-
-			Integer hits = (Integer) keyRow.get("hits");
-
-			if (hits == null) {
-				hits = 1;
-			}
-			else {
-				hits++;
-			}
-
-			keyRow.put("hits", hits);
-
-			saveKeys(DECODES_PATH, key, keyRow);
+			incrementHits(DECODES_PATH, key);
 		}
 
         return "decode";
@@ -115,20 +102,7 @@ public class WeDeployController extends WebMvcConfigurerAdapter {
 			model.addAttribute("liferayKey", key);
 			model.addAttribute("encodedKey", encodedKey);
 
-			Map<String, Object> keyRow = fetchKeyValue(ENCODES_PATH, key);
-
-			Integer hits = (Integer) keyRow.get("hits");
-
-			if (hits == null) {
-				hits = 1;
-			}
-			else {
-				hits++;
-			}
-
-			keyRow.put("hits", hits);
-
-			saveKeys(ENCODES_PATH, key, keyRow);
+			incrementHits(ENCODES_PATH, key);
 		}
 
 		return "encode";
@@ -167,6 +141,23 @@ public class WeDeployController extends WebMvcConfigurerAdapter {
 		}
 
 		return keys;
+	}
+
+	private void incrementHits(String namespacePath, String key) {
+		Map<String, Object> keyValue = fetchKeyValue(namespacePath, key);
+
+		Integer hits = (Integer) keyValue.get("hits");
+
+		if (hits == null) {
+			hits = 1;
+		}
+		else {
+			hits++;
+		}
+
+		keyValue.put("hits", hits);
+
+		saveKeys(namespacePath, key, keyValue);
 	}
 
 	/**
