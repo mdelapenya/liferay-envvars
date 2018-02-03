@@ -28,6 +28,11 @@
     color: rgba(255, 255, 255, 0.9);
     margin: 0;
   }
+  h3 {
+    font-weight: 150;
+    color: rgba(255, 255, 255, 0.42);
+    margin: 0;
+  }
   .logo {
     position: absolute;
     bottom: 20px;
@@ -43,6 +48,7 @@
       <h2 th:if="${error != null}" th:text="${error}">Static summary</h2>
       <h2 th:if="${liferayKey != null}" th:text="${liferayKey}"></h2>
       <h2 th:if="${encodedKey != null}" th:text="${encodedKey}"></h2>
+      <h3 th:if="${hits != null}" th:text="Current hits: ${hits}"></h3>
     </div>
   </div>
 
