@@ -3,6 +3,13 @@ package io.wedeploy.controller;
 import com.liferay.portal.configuration.EnvVariableDecoder;
 import com.liferay.portal.configuration.EnvVariableEncoder;
 
+import com.wedeploy.api.ApiClient;
+import com.wedeploy.api.WeDeploy;
+import com.wedeploy.api.sdk.Response;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
@@ -21,7 +28,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 public class WeDeployController extends WebMvcConfigurerAdapter {
 
     public WeDeployController() {
+		Map<String, String> env = System.getenv();
 
+		if (env.containsKey("WEDEPLOY_DB_URL")) {
+			dbUrl = env.get("WEDEPLOY_DB_URL");
+		}
     }
 
     public static void main(String[] args) {
@@ -56,6 +67,21 @@ public class WeDeployController extends WebMvcConfigurerAdapter {
 
 			model.addAttribute("liferayKey", key);
 			model.addAttribute("decodedKey", decodedKey);
+
+			Map<String, Object> keyRow = fetchKeyValue(DECODES_PATH, key);
+
+			Integer hits = (Integer) keyRow.get("hits");
+
+			if (hits == null) {
+				hits = 1;
+			}
+			else {
+				hits++;
+			}
+
+			keyRow.put("hits", hits);
+
+			saveKeys(DECODES_PATH, key, keyRow);
 		}
 
         return "decode";
@@ -72,6 +98,21 @@ public class WeDeployController extends WebMvcConfigurerAdapter {
 
 			model.addAttribute("liferayKey", key);
 			model.addAttribute("encodedKey", encodedKey);
+
+			Map<String, Object> keyRow = fetchKeyValue(ENCODES_PATH, key);
+
+			Integer hits = (Integer) keyRow.get("hits");
+
+			if (hits == null) {
+				hits = 1;
+			}
+			else {
+				hits++;
+			}
+
+			keyRow.put("hits", hits);
+
+			saveKeys(ENCODES_PATH, key, keyRow);
 		}
 
 		return "encode";
@@ -81,6 +122,64 @@ public class WeDeployController extends WebMvcConfigurerAdapter {
 	@RequestMapping("/")
 	public ModelAndView index() {
 		return new ModelAndView("layout");
+	}
+
+	/**
+	 * Fetch keys (encodes or decodes) from the datastore.
+	 */
+	@SuppressWarnings("unchecked")
+	private Map<String, Object> fetchKeyValue(String path, String key) {
+		Response response = WeDeploy
+			.url(dbUrl)
+			.path(path + "/" + key)
+			.get();
+
+		if (response.statusCode() == 404) {
+			return new HashMap<>();
+		}
+
+		if (!response.succeeded()) {
+			throw new RuntimeException(
+				"Fetching keys failed: " + response.statusCode() + " "
+					+ response.statusMessage());
+		}
+
+		if (response.body().equals("[]")) {
+			return new HashMap<>();
+		}
+
+		Map<String, Object> keys = response.bodyMap(String.class, Object.class);
+
+		if (keys == null) {
+			return new HashMap<>();
+		}
+
+		return keys;
+	}
+
+	/**
+	 * Saves the keys (encodes or decodes) to the datastore.
+	 */
+	private void saveKeys(String path, String key, Map<String, Object> keys) {
+		Response response = WeDeploy
+			.url(dbUrl)
+			.path(path + "/" + key)
+			.put(keys);
+
+		if (!response.succeeded()) {
+			throw new RuntimeException(
+				"Saving keys failed: " + response.statusCode() + " " +
+					response.statusMessage());
+		}
+	}
+
+	private static final String DECODES_PATH = "/decodes";
+	private static final String ENCODES_PATH = "/encodes";
+
+	private String dbUrl;
+
+	static {
+		ApiClient.init();
 	}
 
 }

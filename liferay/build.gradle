@@ -30,6 +30,8 @@ repositories {
 
 dependencies {
   compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+  compile("com.wedeploy:com.wedeploy.api-java.api:1.0.0")
+  compile("com.wedeploy:com.wedeploy.api-java.api-client:1.0.0")
 
   testCompile 'junit:junit:4.12'
 }
