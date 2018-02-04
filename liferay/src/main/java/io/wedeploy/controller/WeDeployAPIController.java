@@ -17,6 +17,8 @@ package io.wedeploy.controller;
 import com.liferay.portal.configuration.EnvVariableDecoder;
 import com.liferay.portal.configuration.EnvVariableEncoder;
 
+import io.wedeploy.model.HitsModel;
+
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.PathVariable;
@@ -58,7 +60,7 @@ public class WeDeployAPIController {
 	}
 
 	@RequestMapping(value = "/decode/{key}", method = RequestMethod.GET)
-	public String decode(@PathVariable("key") String key) {
+	public HitsModel decode(@PathVariable("key") String key) {
 		if (key == null || key.isEmpty() ||
 			!key.startsWith(Constants.ENV_OVERRIDE_PREFIX)) {
 
@@ -71,13 +73,13 @@ public class WeDeployAPIController {
 
 		String decodedKey = EnvVariableDecoder.decode(envKey.toLowerCase());
 
-		hitsManager.incrementHits(Constants.DECODES_PATH, key);
+		Integer hits = hitsManager.incrementHits(Constants.DECODES_PATH, key);
 
-		return decodedKey;
+		return new HitsModel(decodedKey, hits);
 	}
 
 	@RequestMapping(value = "/encode/{key}", method = RequestMethod.GET)
-	public String encode(@PathVariable("key") String key) {
+	public HitsModel encode(@PathVariable("key") String key) {
 		if (key == null || key.isEmpty()) {
 
 			throw new IllegalArgumentException(
@@ -86,9 +88,9 @@ public class WeDeployAPIController {
 
 		String encodedKey = EnvVariableEncoder.encode(key);
 
-		hitsManager.incrementHits(Constants.ENCODES_PATH, key);
+		Integer hits = hitsManager.incrementHits(Constants.ENCODES_PATH, key);
 
-		return encodedKey;
+		return new HitsModel(encodedKey, hits);
 	}
 
 	private String dbUrl;
