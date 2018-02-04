@@ -12,17 +12,19 @@
  * details.
  */
 
-package io.wedeploy.controller;
+package io.wedeploy;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * @author Manuel de la Peña
  */
-public class Constants {
+@SpringBootApplication
+public class Application {
 
-	public static final String DECODES_PATH = "/decodes";
-
-	public static final String ENCODES_PATH = "/encodes";
-
-	public static final String ENV_OVERRIDE_PREFIX = "LIFERAY_";
+	public static void main(String[] args) {
+		SpringApplication.run(Application.class, args);
+	}
 
 }
