@@ -14,6 +14,8 @@
 
 package io.wedeploy.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * @author Manuel de la Peña
  */
@@ -33,6 +35,8 @@ public class HitsModel {
 	}
 
 	private String key;
+
+	@JsonIgnore
 	private Integer hits;
 
 }
