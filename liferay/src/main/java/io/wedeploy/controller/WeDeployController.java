@@ -99,7 +99,8 @@ public class WeDeployController extends WebMvcConfigurerAdapter {
 			model.addAttribute("liferayKey", key);
 			model.addAttribute("encodedKey", encodedKey);
 
-			Integer currentHits = hitsManager.incrementHits(Constants.ENCODES_PATH, key);
+			Integer currentHits = hitsManager.incrementHits(
+				Constants.ENCODES_PATH, key);
 
 			model.addAttribute("hits", currentHits);
 		}
