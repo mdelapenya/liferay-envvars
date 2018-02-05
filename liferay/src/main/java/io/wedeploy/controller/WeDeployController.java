@@ -3,8 +3,6 @@ package io.wedeploy.controller;
 import com.liferay.portal.configuration.EnvVariableDecoder;
 import com.liferay.portal.configuration.EnvVariableEncoder;
 
-import com.wedeploy.api.ApiClient;
-
 import java.util.Map;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -30,7 +28,7 @@ public class WeDeployController extends WebMvcConfigurerAdapter {
 			if (env.containsKey("WEDEPLOY_DB_URL")) {
 				dbUrl = env.get("WEDEPLOY_DB_URL");
 
-				hitsManager = new HitsManager(dbUrl);
+				hitsManager = HitsManager.getInstance();
 			}
 			else {
 				System.out.println(
@@ -79,7 +77,7 @@ public class WeDeployController extends WebMvcConfigurerAdapter {
 			model.addAttribute("decodedKey", decodedKey);
 
 			Integer currentHits = hitsManager.incrementHits(
-				Constants.DECODES_PATH, key);
+				dbUrl, Constants.DECODES_PATH, key);
 
 			model.addAttribute("hits", currentHits);
 		}
@@ -100,7 +98,7 @@ public class WeDeployController extends WebMvcConfigurerAdapter {
 			model.addAttribute("encodedKey", encodedKey);
 
 			Integer currentHits = hitsManager.incrementHits(
-				Constants.ENCODES_PATH, key);
+				dbUrl, Constants.ENCODES_PATH, key);
 
 			model.addAttribute("hits", currentHits);
 		}
@@ -116,9 +114,5 @@ public class WeDeployController extends WebMvcConfigurerAdapter {
 
 	private String dbUrl;
     private HitsManager hitsManager;
-
-	static {
-		ApiClient.init();
-	}
 
 }

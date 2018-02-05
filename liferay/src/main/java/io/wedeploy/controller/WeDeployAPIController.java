@@ -40,7 +40,7 @@ public class WeDeployAPIController {
 			if (env.containsKey("WEDEPLOY_DB_URL")) {
 				dbUrl = env.get("WEDEPLOY_DB_URL");
 
-				hitsManager = new HitsManager(dbUrl);
+				hitsManager = HitsManager.getInstance();
 			}
 			else {
 				System.out.println(
@@ -73,7 +73,8 @@ public class WeDeployAPIController {
 
 		String decodedKey = EnvVariableDecoder.decode(envKey.toLowerCase());
 
-		Integer hits = hitsManager.incrementHits(Constants.DECODES_PATH, key);
+		Integer hits = hitsManager.incrementHits(
+			dbUrl, Constants.DECODES_PATH, key);
 
 		return new HitsModel(decodedKey, hits);
 	}
@@ -88,7 +89,8 @@ public class WeDeployAPIController {
 
 		String encodedKey = EnvVariableEncoder.encode(key);
 
-		Integer hits = hitsManager.incrementHits(Constants.ENCODES_PATH, key);
+		Integer hits = hitsManager.incrementHits(
+			dbUrl, Constants.ENCODES_PATH, key);
 
 		return new HitsModel(encodedKey, hits);
 	}

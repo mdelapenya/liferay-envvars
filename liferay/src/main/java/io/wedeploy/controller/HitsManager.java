@@ -13,6 +13,7 @@
  */
 package io.wedeploy.controller;
 
+import com.wedeploy.api.ApiClient;
 import com.wedeploy.api.WeDeploy;
 import com.wedeploy.api.sdk.Response;
 
@@ -22,14 +23,16 @@ import java.util.Map;
 /**
  * @author Manuel de la Peña
  */
-public class HitsManager {
+public final class HitsManager {
 
-	public HitsManager(String dbUrl) {
-		this.dbUrl = dbUrl;
+	public static HitsManager getInstance() {
+		return _instance;
 	}
 
-	public Integer incrementHits(String namespacePath, String key) {
-		Map<String, Object> keyValue = fetchKeyValue(namespacePath, key);
+	public Integer incrementHits(
+		String dbUrl, String namespacePath, String key) {
+
+		Map<String, Object> keyValue = fetchKeyValue(dbUrl, namespacePath, key);
 
 		Integer hits = (Integer) keyValue.get("hits");
 
@@ -42,16 +45,21 @@ public class HitsManager {
 
 		keyValue.put("hits", hits);
 
-		saveKeys(namespacePath, key, keyValue);
+		saveKeys(dbUrl, namespacePath, key, keyValue);
 
 		return hits;
+	}
+
+	private HitsManager() {
 	}
 
 	/**
 	 * Fetch keys (encodes or decodes) from the datastore.
 	 */
 	@SuppressWarnings("unchecked")
-	private Map<String, Object> fetchKeyValue(String path, String key) {
+	private Map<String, Object> fetchKeyValue(
+		String dbUrl, String path, String key) {
+
 		Response response = WeDeploy
 			.url(dbUrl)
 			.path(path + "/" + key)
@@ -79,7 +87,9 @@ public class HitsManager {
 	/**
 	 * Saves the keys (encodes or decodes) to the datastore.
 	 */
-	private void saveKeys(String path, String key, Map<String, Object> keys) {
+	private void saveKeys(
+		String dbUrl, String path, String key, Map<String, Object> keys) {
+
 		Response response = WeDeploy
 			.url(dbUrl)
 			.path(path + "/" + key)
@@ -92,6 +102,10 @@ public class HitsManager {
 		}
 	}
 
-	private String dbUrl;
+	private static final HitsManager _instance = new HitsManager();
+
+	static {
+		ApiClient.init();
+	}
 
 }
