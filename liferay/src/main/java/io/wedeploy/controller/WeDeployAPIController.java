@@ -65,7 +65,7 @@ public class WeDeployAPIController {
 			!key.startsWith(Constants.ENV_OVERRIDE_PREFIX)) {
 
 			throw new IllegalArgumentException(
-				"Liferay Env Vars start with LIFERAY_ prefix");
+				"Liferay Env Vars starts with LIFERAY_ prefix");
 		}
 
 		String envKey = key.substring(

@@ -67,7 +67,7 @@ public class WeDeployController extends WebMvcConfigurerAdapter {
 			!key.startsWith(Constants.ENV_OVERRIDE_PREFIX)) {
 
 			model.addAttribute(
-				"error", "Liferay Env Vars start with LIFERAY_ prefix");
+				"error", "Liferay Env Vars starts with LIFERAY_ prefix");
 		}
 		else {
 			String envKey = key.substring(
