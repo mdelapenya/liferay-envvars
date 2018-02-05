@@ -17,6 +17,7 @@ package io.wedeploy.controller;
 import com.liferay.portal.configuration.EnvVariableDecoder;
 import com.liferay.portal.configuration.EnvVariableEncoder;
 
+import io.wedeploy.manager.LiferayPropertiesManager;
 import io.wedeploy.model.HitsModel;
 
 import java.util.Map;
@@ -81,6 +82,10 @@ public class WeDeployAPIController {
 
 	@RequestMapping(value = "/encode/{key}", method = RequestMethod.GET)
 	public HitsModel encode(@PathVariable("key") String key) {
+		if (!_liferayPropertiesManager.containsKey(key)) {
+			throw new NotFoundException(key + " does not exist.");
+		}
+
 		if (key == null || key.isEmpty()) {
 
 			throw new IllegalArgumentException(
@@ -94,6 +99,9 @@ public class WeDeployAPIController {
 
 		return new HitsModel(encodedKey, hits);
 	}
+
+	private static final LiferayPropertiesManager _liferayPropertiesManager =
+		LiferayPropertiesManager.getInstance();
 
 	private String dbUrl;
 	private HitsManager hitsManager;

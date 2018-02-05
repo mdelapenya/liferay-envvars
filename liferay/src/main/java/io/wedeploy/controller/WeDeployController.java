@@ -3,6 +3,8 @@ package io.wedeploy.controller;
 import com.liferay.portal.configuration.EnvVariableDecoder;
 import com.liferay.portal.configuration.EnvVariableEncoder;
 
+import io.wedeploy.manager.LiferayPropertiesManager;
+
 import java.util.Map;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -88,8 +90,13 @@ public class WeDeployController extends WebMvcConfigurerAdapter {
 	@RequestMapping(value = "/encode/{key}", method = RequestMethod.GET)
 	public String encode(Model model, @PathVariable("key") String key) {
 		if (key == null || key.isEmpty()) {
-
 			model.addAttribute("error", "Please add a Liferay Portal property");
+		}
+		else if (!_liferayPropertiesManager.containsKey(key)) {
+			model.addAttribute(
+				"error",
+				"The property does not exist in Liferay Portal's properties" +
+					" file");
 		}
 		else {
 			String encodedKey = EnvVariableEncoder.encode(key);
@@ -112,7 +119,10 @@ public class WeDeployController extends WebMvcConfigurerAdapter {
 		return new ModelAndView("layout");
 	}
 
+	private static final LiferayPropertiesManager _liferayPropertiesManager =
+		LiferayPropertiesManager.getInstance();
+
 	private String dbUrl;
-    private HitsManager hitsManager;
+	private HitsManager hitsManager;
 
 }
